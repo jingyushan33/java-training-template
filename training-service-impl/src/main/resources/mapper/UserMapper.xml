@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lunz.training.mapper.UserMapper">
+
+    <!---新建用户 -->
+    <insert id="addUser">
+        insert into tb_user (Username, Password, Gender, Nickname, CreatedAt, UpdatedAt, Deleted)
+        values  (#{user.username}, #{user.password}, #{user.gender}, #{user.nickname}, now(), now(), 0)
+    </insert>
+</mapper>
+
+

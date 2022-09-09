@@ -1,0 +1,136 @@
+server:
+  port: 8072
+  undertow:
+    accesslog:
+      dir: ./logs
+      enabled: true
+    buffer-size: 1024
+    direct-buffers: true
+    threads:
+      io: 2
+      worker: 16
+
+spring:
+  application:
+    name: training-service
+  cloud:
+    consul:
+      discovery:
+        enabled: true
+        healthCheckInterval: 15s
+        healthCheckPath: /actuator/health
+        instance-id: ${spring.application.name}:${server.port}
+        ip-address: ${spring.cloud.client.ip-address}
+        port: ${server.port}
+        preferIpAddress: true
+        service-name: ${spring.application.name}
+      host: localhost
+      port: 8500
+    discovery:
+      register: true
+    loadbalancer:
+      ribbon:
+        enabled: false
+  # 数据源
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/jystest?socketTimeout=60000&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      username: root
+      password: 1234
+      auto-commit: true
+      connection-test-query: select 1
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      maximum-pool-size: 8
+      minimum-idle: 8
+      pool-name: HikariCP-TrainingApplication
+
+  main:
+    allow-bean-definition-overriding: false
+
+config:
+  oauth2:
+    accessTokenUri: http://uc-identity-fat.lunz.cn/connect/token
+    swagger:
+      description: 微服务项目模板
+      title: 微服务项目模板
+      version: 2.0
+
+# rpc通信配置
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 10000
+        logger-level: basic
+        read-timeout: 10000
+logging:
+  level:
+    com:
+      netflix: info
+    feign:
+      Logger: info
+
+# mybatis配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      # 注意更新策略，默认空值、null值不更新
+      update-strategy: not_empty
+  mapper-locations: classpath:mapper/*.xml
+
+ribbon:
+  eager-load:
+    enabled: true
+  okhttp:
+    enabled: true
+
+
+# swagger访问路径配置
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/v1/training/docs
+
+# 监控
+management:
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: '*'
+  metrics:
+    distribution:
+      percentiles:
+        - 0.9
+        - 0.95
+        - 0.99
+      percentiles-histogram:
+        http:
+          server:
+            request: true
+      slo:
+        - 10ms
+        - 100ms
+    enable:
+      http:
+        server:
+          request: true
+    tags:
+      app: ${spring.application.name}
+      env: dev
+  trace:
+    http:
+      enabled: true
+      include: AUTHORIZATION_HEADER,COOKIE_HEADERS,PRINCIPAL,REMOTE_ADDRESS,REQUEST_HEADERS,RESPONSE_HEADERS,SESSION_ID,TIME_TAKEN
+
