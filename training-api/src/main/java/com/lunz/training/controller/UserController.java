@@ -1,5 +1,6 @@
 package com.lunz.training.controller;
 
+import com.lunz.kernel.exceptions.NotFoundDataException;
 import com.lunz.training.BaseController;
 import com.lunz.training.annotation.AllowAnonymous;
 import com.lunz.training.convert.UserConvertMappers;
@@ -34,6 +35,21 @@ public class UserController extends BaseController {
         UserDO userDO = UserConvertMappers.MAPPER.convert2UserDO(userDTO);
         userService.addUser(userDO);
         return OperationResult.success();
+    }
+
+
+    @AllowAnonymous
+    @ApiOperation(value = "根据姓名查找用户", tags = {"作业"})
+    @ApiResponse(code = 200, message = "success")
+    @PostMapping("/findUserByName/{name}")
+    @ResponseBody
+    public UserDO findUser(@Valid String name) {
+        UserDTO userDTO = userService.findUser(name);
+        if (userDTO == null) {
+            throw new NotFoundDataException();
+        }
+
+        return UserConvertMappers.MAPPER.convert2UserDO(userDTO);
     }
 }
 

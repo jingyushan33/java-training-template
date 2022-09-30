@@ -2,6 +2,8 @@ package com.lunz.training.service;
 
 import com.lunz.training.dos.UserDO;
 
+import javax.validation.Valid;
+
 /**
  * @author liangbing
  * @description 用户服务接口
@@ -15,5 +17,10 @@ public interface IUserService {
      */
     void addUser(UserDO userDO);
 
+    /**
+     * 查找用户
+     * @param userDO
+     */
+    void findUser(@Valid String userDO);
 }
 

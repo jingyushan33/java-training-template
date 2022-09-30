@@ -55,7 +55,7 @@
             <artifactId>lunz-kernel</artifactId>
         </dependency>
 
-        <!--mapstruct-->
+        <!--mapstruct-->io.swagger
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>

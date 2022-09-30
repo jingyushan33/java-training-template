@@ -8,6 +8,9 @@
         insert into tb_user (Username, Password, Gender, Nickname, CreatedAt, UpdatedAt, Deleted)
         values  (#{user.username}, #{user.password}, #{user.gender}, #{user.nickname}, now(), now(), 0)
     </insert>
+    <select id="findUserByName" parameterType="string">
+        select * from tb_user where UserName =
+    </select>
 </mapper>
 
 
