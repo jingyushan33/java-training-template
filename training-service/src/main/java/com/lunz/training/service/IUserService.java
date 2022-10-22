@@ -1,5 +1,7 @@
 package com.lunz.training.service;
 
+import com.lunz.training.dos.FindUserDO;
+import com.lunz.training.dos.FindUserOutputDO;
 import com.lunz.training.dos.UserDO;
 
 /**
@@ -15,5 +17,11 @@ public interface IUserService {
      */
     void addUser(UserDO userDO);
 
+    /**
+     *  查找用户
+     * @param findUserDO
+     * @return
+     */
+    FindUserOutputDO findUser(FindUserDO findUserDO);
 }
 
