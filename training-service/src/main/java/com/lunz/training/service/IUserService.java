@@ -23,5 +23,11 @@ public interface IUserService {
      * @return
      */
     FindUserOutputDO findUser(FindUserDO findUserDO);
+
+    /**
+     *
+     * @param userDTO
+     */
+    void updateDemo(UserDO userDTO);
 }
 

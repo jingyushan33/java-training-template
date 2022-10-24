@@ -30,7 +30,12 @@ import javax.validation.Valid;
 public class UserController extends BaseController {
     @Autowired
     private IUserService userService;
-    
+
+    /**
+     * 新增用户
+     * @param userDTO
+     * @return
+     */
     @AllowAnonymous
     @ApiOperation(value = "新增用户", tags = {"作业"})
     @ApiResponse(code = 200, message = "success")
@@ -47,7 +52,7 @@ public class UserController extends BaseController {
      * @param findUserDTO 查找用户参数类
      * @return
      */
-    @ApiOperation(value = "查找用户", tags = {"用户接口"})
+    @ApiOperation(value = "查找用户", tags = {"作业"})
     @ApiResponse(code = 200, message = "success")
     @PostMapping("/findUser")
     @ResponseBody
@@ -69,6 +74,22 @@ public class UserController extends BaseController {
         } else {
             return OperationTResult.succeeded(findUserVO);
         }
+    }
+
+    /**
+     * 更新用户
+     * @param userDTO
+     * @return
+     */
+    @AllowAnonymous
+    @ApiOperation(value = "修改用户", tags = {"作业"})
+    @ApiResponse(code = 200, message = "success")
+    @PostMapping("/updateUser")
+    @ResponseBody
+    public OperationResult updateUser(@Valid @RequestBody UserDTO userDTO){
+        UserDO userDO = UserConvertMappers.MAPPER.convert2UserDO(userDTO);
+        userService.updateDemo(userDO);
+        return OperationResult.success();
     }
 }
 

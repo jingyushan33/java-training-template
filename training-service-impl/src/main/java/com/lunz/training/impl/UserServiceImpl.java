@@ -2,15 +2,18 @@ package com.lunz.training.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lunz.training.bean.Demo;
 import com.lunz.training.bean.TbUser;
 import com.lunz.training.dos.FindUserDO;
 import com.lunz.training.dos.FindUserOutputDO;
 import com.lunz.training.dos.UserDO;
+import com.lunz.training.dto.UserDTO;
 import com.lunz.training.mapper.UserMapper;
 import com.lunz.training.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, TbUser> implements IUserService {
@@ -63,6 +66,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, TbUser> implements 
         findUserOutputDO.setCreatedAt(tbUser.getCreatedAt());
 
         return findUserOutputDO;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateDemo(UserDO userDO) {
+
+        TbUser tbUser = new TbUser();
+        tbUser.setUsername(userDO.getUsername());
+        tbUser.setPassword(userDO.getPassword());
+        tbUser.setGender(userDO.getGender());
+        tbUser.setNickname(userDO.getNickname());
+        tbUser.setId(userDO.getId());
+
+        userMapper.updateById(tbUser);
     }
 
 }

@@ -21,6 +21,5 @@ public interface UserMapper extends BaseMapper<TbUser> {
      * @return
      */
     void addUser(@Param("user") UserDO user);
-
 }
 

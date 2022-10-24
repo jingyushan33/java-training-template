@@ -11,6 +11,11 @@ import lombok.Data;
 public class UserDO {
 
     /**
+     * id
+     */
+    private Integer id;
+
+    /**
      * 用户名
      */
     private String username;
