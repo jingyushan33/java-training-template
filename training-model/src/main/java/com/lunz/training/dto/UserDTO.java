@@ -1,5 +1,6 @@
 package com.lunz.training.dto;
 
+import com.lunz.training.group.AddGroup;
 import com.lunz.training.group.UpdateGroup;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,10 +9,17 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 
 @Data
 public class UserDTO {
+    /**
+     * 用户id
+     */
+    @ApiModelProperty(name = "id",value = "用户id")
+    private Integer id;
+
     /**
      * 用户名
      */

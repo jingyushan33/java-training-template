@@ -1,13 +1,18 @@
 package com.lunz.training.controller;
 
-import com.lunz.kernel.exceptions.NotFoundDataException;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.lunz.training.BaseController;
 import com.lunz.training.annotation.AllowAnonymous;
 import com.lunz.training.convert.UserConvertMappers;
+import com.lunz.training.dos.FindUserDO;
+import com.lunz.training.dos.FindUserOutputDO;
 import com.lunz.training.dos.UserDO;
+import com.lunz.training.dto.FindUserDTO;
 import com.lunz.training.dto.UserDTO;
 import com.lunz.training.result.OperationResult;
+import com.lunz.training.result.OperationTResult;
 import com.lunz.training.service.IUserService;
+import com.lunz.training.vo.FindUserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -25,7 +30,12 @@ import javax.validation.Valid;
 public class UserController extends BaseController {
     @Autowired
     private IUserService userService;
-    
+
+    /**
+     * 新增用户
+     * @param userDTO
+     * @return
+     */
     @AllowAnonymous
     @ApiOperation(value = "新增用户", tags = {"作业"})
     @ApiResponse(code = 200, message = "success")
@@ -37,19 +47,49 @@ public class UserController extends BaseController {
         return OperationResult.success();
     }
 
-
-    @AllowAnonymous
-    @ApiOperation(value = "根据姓名查找用户", tags = {"作业"})
+    /**
+     * 查找用户
+     * @param findUserDTO 查找用户参数类
+     * @return
+     */
+    @ApiOperation(value = "查找用户", tags = {"作业"})
     @ApiResponse(code = 200, message = "success")
-    @PostMapping("/findUserByName/{name}")
+    @PostMapping("/findUser")
     @ResponseBody
-    public UserDO findUser(@Valid String name) {
-        UserDTO userDTO = userService.findUser(name);
-        if (userDTO == null) {
-            throw new NotFoundDataException();
+    public OperationTResult<FindUserDTO> findUse(@Valid @RequestBody FindUserDTO findUserDTO){
+        if (StringUtils.isBlank(findUserDTO.getUsername()) && StringUtils.isBlank(findUserDTO.getNickname())) {
+            return OperationTResult.fail("请输入用户名或者昵称！");
+        }
+        FindUserDO findUserDO = UserConvertMappers.MAPPER.convert2FindUserDO(findUserDTO);
+
+        FindUserOutputDO findUserOutputDO = userService.findUser(findUserDO);
+        FindUserVO findUserVO = null;
+
+        if (findUserOutputDO != null) {
+            findUserVO = UserConvertMappers.MAPPER.convert2FindUserVO(findUserOutputDO);
         }
 
-        return UserConvertMappers.MAPPER.convert2UserDO(userDTO);
+        if (findUserVO == null) {
+            return OperationTResult.fail("找不到用户！");
+        } else {
+            return OperationTResult.succeeded(findUserVO);
+        }
+    }
+
+    /**
+     * 更新用户
+     * @param userDTO
+     * @return
+     */
+    @AllowAnonymous
+    @ApiOperation(value = "修改用户", tags = {"作业"})
+    @ApiResponse(code = 200, message = "success")
+    @PostMapping("/updateUser")
+    @ResponseBody
+    public OperationResult updateUser(@Valid @RequestBody UserDTO userDTO){
+        UserDO userDO = UserConvertMappers.MAPPER.convert2UserDO(userDTO);
+        userService.updateDemo(userDO);
+        return OperationResult.success();
     }
 }
 

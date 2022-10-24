@@ -77,7 +77,7 @@ logging:
 # mybatis配置
 mybatis-plus:
   configuration:
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: false
   global-config:
     db-config:
       # 注意更新策略，默认空值、null值不更新

@@ -1,7 +1,11 @@
 package com.lunz.training.convert;
 
+import com.lunz.training.dos.FindUserDO;
+import com.lunz.training.dos.FindUserOutputDO;
 import com.lunz.training.dos.UserDO;
+import com.lunz.training.dto.FindUserDTO;
 import com.lunz.training.dto.UserDTO;
+import com.lunz.training.vo.FindUserVO;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -24,5 +28,9 @@ public interface UserConvertMappers {
      * @return
      */
     UserDO convert2UserDO(UserDTO userDTO);
+
+    FindUserDO convert2FindUserDO(FindUserDTO findUserDTO);
+
+    FindUserVO convert2FindUserVO(FindUserOutputDO findUserOutputDO);
 }
 
