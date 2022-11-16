@@ -2,12 +2,10 @@ package com.lunz.training.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lunz.training.bean.Demo;
 import com.lunz.training.bean.TbUser;
 import com.lunz.training.dos.FindUserDO;
 import com.lunz.training.dos.FindUserOutputDO;
 import com.lunz.training.dos.UserDO;
-import com.lunz.training.dto.UserDTO;
 import com.lunz.training.mapper.UserMapper;
 import com.lunz.training.service.IUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -20,12 +18,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, TbUser> implements 
     @Autowired
     private UserMapper userMapper;
 
-/*    @Override
+    @Override
     public void addUser(UserDO userDO) {
         userMapper.addUser(userDO);
-    }*/
+    }
 
-    @Override
+/*    @Override
     public void addUser(UserDO userDO) {
         TbUser tbUser = new TbUser();
         tbUser.setUsername(userDO.getUsername());
@@ -34,7 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, TbUser> implements 
         tbUser.setNickname(userDO.getNickname());
 
         userMapper.insert(tbUser);
-    }
+
+        // userMapper.addUser(userDO);
+    }*/
 
     @Override
     public FindUserOutputDO findUser(FindUserDO findUserDO) {
@@ -72,14 +72,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, TbUser> implements 
     @Transactional(rollbackFor = Exception.class)
     public void updateDemo(UserDO userDO) {
 
-        TbUser tbUser = new TbUser();
+/*        TbUser tbUser = new TbUser();
         tbUser.setUsername(userDO.getUsername());
         tbUser.setPassword(userDO.getPassword());
         tbUser.setGender(userDO.getGender());
         tbUser.setNickname(userDO.getNickname());
         tbUser.setId(userDO.getId());
 
-        userMapper.updateById(tbUser);
+        userMapper.updateById(tbUser);*/
+
+        userMapper.updateById(userDO);
+    }
+
+    @Override
+    public void deleteDemo(Integer id) {
+        userMapper.delete(id);
     }
 
 }

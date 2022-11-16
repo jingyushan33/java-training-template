@@ -29,5 +29,7 @@ public interface IUserService {
      * @param userDTO
      */
     void updateDemo(UserDO userDTO);
+
+    void deleteDemo(Integer id);
 }
 

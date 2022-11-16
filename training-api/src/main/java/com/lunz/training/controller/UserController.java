@@ -9,6 +9,8 @@ import com.lunz.training.dos.FindUserOutputDO;
 import com.lunz.training.dos.UserDO;
 import com.lunz.training.dto.FindUserDTO;
 import com.lunz.training.dto.UserDTO;
+import com.lunz.training.group.AddGroup;
+import com.lunz.training.group.UpdateGroup;
 import com.lunz.training.result.OperationResult;
 import com.lunz.training.result.OperationTResult;
 import com.lunz.training.service.IUserService;
@@ -41,7 +43,7 @@ public class UserController extends BaseController {
     @ApiResponse(code = 200, message = "success")
     @PostMapping("/addUser")
     @ResponseBody
-    public OperationResult addUser(@Valid @RequestBody UserDTO userDTO) {
+    public OperationResult addUser(@RequestBody @Validated({AddGroup.class}) @Valid UserDTO userDTO) {
         UserDO userDO = UserConvertMappers.MAPPER.convert2UserDO(userDTO);
         userService.addUser(userDO);
         return OperationResult.success();
@@ -54,7 +56,7 @@ public class UserController extends BaseController {
      */
     @ApiOperation(value = "查找用户", tags = {"作业"})
     @ApiResponse(code = 200, message = "success")
-    @PostMapping("/findUser")
+    @GetMapping("/findUser")
     @ResponseBody
     public OperationTResult<FindUserDTO> findUse(@Valid @RequestBody FindUserDTO findUserDTO){
         if (StringUtils.isBlank(findUserDTO.getUsername()) && StringUtils.isBlank(findUserDTO.getNickname())) {
@@ -84,11 +86,26 @@ public class UserController extends BaseController {
     @AllowAnonymous
     @ApiOperation(value = "修改用户", tags = {"作业"})
     @ApiResponse(code = 200, message = "success")
-    @PostMapping("/updateUser")
+    @PutMapping("/updateUser")
     @ResponseBody
-    public OperationResult updateUser(@Valid @RequestBody UserDTO userDTO){
+    public OperationResult updateUser(@RequestBody @Validated({UpdateGroup.class}) @Valid UserDTO userDTO){
         UserDO userDO = UserConvertMappers.MAPPER.convert2UserDO(userDTO);
         userService.updateDemo(userDO);
+        return OperationResult.success();
+    }
+
+    /**
+     * 删除用户
+     * @param id
+     * @return
+     */
+    @AllowAnonymous
+    @ApiOperation(value = "删除用户", tags = {"作业"})
+    @ApiResponse(code = 200, message = "success")
+    @PutMapping("/deleteUser/{id}")
+    @ResponseBody
+    public OperationResult deleteUser(@PathVariable("id")  Integer id){
+        userService.deleteDemo(id);
         return OperationResult.success();
     }
 }

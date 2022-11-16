@@ -1,5 +1,7 @@
 package com.lunz.training.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -7,6 +9,7 @@ import lombok.Data;
 @Data
 public class TbUser extends BaseModel {
 
+    @TableId(value = "id",type= IdType.AUTO)
     private Integer id;
     /**
      * 用户名

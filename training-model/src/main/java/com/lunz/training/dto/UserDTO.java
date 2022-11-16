@@ -1,5 +1,7 @@
 package com.lunz.training.dto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.lunz.training.group.AddGroup;
 import com.lunz.training.group.UpdateGroup;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,6 +20,9 @@ public class UserDTO {
      * 用户id
      */
     @ApiModelProperty(name = "id",value = "用户id")
+    @Null(groups = {AddGroup.class}, message = "id必须是空！")
+    @NotNull(groups = {UpdateGroup.class}, message = "id不能为空！")
+    @TableId(value = "id",type= IdType.AUTO)
     private Integer id;
 
     /**

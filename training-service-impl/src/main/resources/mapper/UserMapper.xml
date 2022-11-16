@@ -8,9 +8,22 @@
         insert into tb_user (Username, Password, Gender, Nickname, CreatedAt, UpdatedAt, Deleted)
         values  (#{user.username}, #{user.password}, #{user.gender}, #{user.nickname}, now(), now(), 0)
     </insert>
-    <select id="findUserByName" parameterType="string">
-        select * from tb_user where UserName =
-    </select>
+
+    <update id="updateById">
+        update tb_user
+        <set>
+            <if test="user.username != null and user.username != ''">Username = #{user.username},</if>
+            <if test="user.password != null and user.password != ''">Password = #{user.password},</if>
+            <if test="user.gender != null and user.gender != ''">Gender = #{user.gender},</if>
+            <if test="user.nickname != null and user.nickname != ''">Nickname = #{user.nickname},</if>
+            UpdatedAt=now()
+        </set>
+        where id=#{user.id}
+    </update>
+
+    <update id="delete">
+        update tb_user set deleted=1,DeletedAt=now() where id=#{user.id}
+    </update>
 </mapper>
 
 
